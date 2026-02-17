@@ -21,6 +21,16 @@ export default function App() {
 
   return (
     <main className="relative h-screen w-screen bg-black">
+      {/* Top-left title */}
+      <div className="fixed left-5 top-5 z-[9999] text-white">
+        <div className="text-lg font-semibold tracking-tight">
+          Clark Audio Instant Support
+        </div>
+        <div className="text-xs text-white/60">
+          AI-powered help for plugins & downloads
+        </div>
+      </div>
+
       {/* Top-right button */}
       <a
         href="https://clarkaudio.com/contact/"
@@ -34,7 +44,7 @@ export default function App() {
       {/* Full-screen chat */}
       <div className="h-full w-full">
         <ChatKitPanel
-          theme={scheme}            // leave as-is so your ChatKitPanel can still theme itself
+          theme={scheme}
           onWidgetAction={handleWidgetAction}
           onResponseEnd={handleResponseEnd}
           onThemeRequest={setScheme}
@@ -43,4 +53,5 @@ export default function App() {
     </main>
   );
 }
+
 
