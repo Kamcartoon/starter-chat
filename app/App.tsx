@@ -35,7 +35,7 @@ export default function App() {
               Clark Audio Instant Support
             </div>
             <div className="truncate text-xs text-white/60">
-              AI-powered help for plugins & downloads
+              Instant help for Clark Audio customers
             </div>
           </div>
 
