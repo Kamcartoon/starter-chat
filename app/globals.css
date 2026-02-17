@@ -21,3 +21,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Hide ChatKit thread title */
+openai-chatkit [data-testid="thread-title"],
+openai-chatkit .ck-thread-title,
+openai-chatkit h1,
+openai-chatkit h2 {
+  display: none !important;
+}
