@@ -22,10 +22,10 @@ export default function App() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen bg-black overflow-hidden">
+    <main className="relative h-screen w-screen bg-slate-950 overflow-hidden">
       {/* Header */}
       <header
-        className="fixed left-0 right-0 top-0 z-[9999] flex items-center justify-between px-5 bg-black/80 backdrop-blur"
+        className="fixed left-0 right-0 top-0 z-[9999] flex items-center justify-between px-5 bg-slate-950/90 backdrop-blur"
         style={{ height: HEADER_HEIGHT_PX }}
       >
         <div className="text-white">
@@ -65,6 +65,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 
