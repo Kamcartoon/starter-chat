@@ -53,18 +53,35 @@ export default function App() {
         </div>
       </header>
 
-      {/* Chat area */}
-      <div className="flex-1 min-h-0 w-full">
-        <ChatKitPanel
-          theme={scheme}
-          onWidgetAction={handleWidgetAction}
-          onResponseEnd={handleResponseEnd}
-          onThemeRequest={setScheme}
-        />
+      {/* Chat area + disclaimer */}
+      <div className="flex-1 min-h-0 w-full flex flex-col">
+        <div className="flex-1 min-h-0">
+          <ChatKitPanel
+            theme={scheme}
+            onWidgetAction={handleWidgetAction}
+            onResponseEnd={handleResponseEnd}
+            onThemeRequest={setScheme}
+          />
+        </div>
+
+        {/* Small print */}
+        <div className="px-4 pb-3 text-center text-[11px] text-white/40">
+          AI can make mistakes. For urgent or critical issues, please{" "}
+          <a
+            href="https://clarkaudio.com/contact/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/55 underline decoration-white/30 underline-offset-2 hover:text-white/75"
+          >
+            submit a support ticket
+          </a>
+          .
+        </div>
       </div>
     </main>
   );
 }
+
 
 
 
