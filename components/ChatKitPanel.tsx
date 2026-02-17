@@ -209,10 +209,7 @@ export function ChatKitPanel({
           try {
             data = JSON.parse(raw) as Record<string, unknown>;
           } catch (parseError) {
-            console.error(
-              "Failed to parse create-session response",
-              parseError
-            );
+            console.error("Failed to parse create-session response", parseError);
           }
         }
 
@@ -256,21 +253,24 @@ export function ChatKitPanel({
 
   const chatkit = useChatKit({
     api: { getClientSecret },
+
+    // ✅ UPDATED THEME: neutral black (no blue tint)
     theme: {
       colorScheme: theme,
       color: {
         grayscale: {
-          hue: 220,
-          tint: 6,
-          shade: theme === "dark" ? -1 : -4,
+          hue: 0,
+          tint: 0,
+          shade: -14,
         },
         accent: {
-          primary: theme === "dark" ? "#f1f5f9" : "#0f172a",
+          primary: "#ffffff",
           level: 1,
         },
       },
       radius: "round",
     },
+
     startScreen: {
       greeting: GREETING,
       prompts: STARTER_PROMPTS,
@@ -324,8 +324,6 @@ export function ChatKitPanel({
       processedFacts.current.clear();
     },
     onError: ({ error }: { error: unknown }) => {
-      // Note that Chatkit UI handles errors for your users.
-      // Thus, your app code doesn't need to display errors on UI.
       console.error("ChatKit error", error);
     },
   });
@@ -343,28 +341,30 @@ export function ChatKitPanel({
     });
   }
 
+  // ✅ UPDATED WRAPPER: fill parent (so App can reserve header space)
   return (
-  <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-black">
-    <ChatKit
-      key={widgetInstanceKey}
-      control={chatkit.control}
-      className={
-        blockingError || isInitializingSession
-          ? "pointer-events-none opacity-0"
-          : "block h-full w-full"
-      }
-    />
-    <ErrorOverlay
-      error={blockingError}
-      fallbackMessage={
-        blockingError || !isInitializingSession ? null : "Loading assistant session..."
-      }
-      onRetry={blockingError && errors.retryable ? handleResetChat : null}
-      retryLabel="Restart chat"
-    />
-  </div>
-);
-
+    <div className="relative flex h-full w-full flex-col overflow-hidden bg-black">
+      <ChatKit
+        key={widgetInstanceKey}
+        control={chatkit.control}
+        className={
+          blockingError || isInitializingSession
+            ? "pointer-events-none opacity-0"
+            : "block h-full w-full"
+        }
+      />
+      <ErrorOverlay
+        error={blockingError}
+        fallbackMessage={
+          blockingError || !isInitializingSession
+            ? null
+            : "Loading assistant session..."
+        }
+        onRetry={blockingError && errors.retryable ? handleResetChat : null}
+        retryLabel="Restart chat"
+      />
+    </div>
+  );
 }
 
 function extractErrorDetail(
