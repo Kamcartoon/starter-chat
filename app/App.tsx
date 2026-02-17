@@ -22,10 +22,10 @@ export default function App() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen bg-black">
+    <main className="relative h-screen w-screen bg-black overflow-hidden">
       {/* Header */}
       <header
-        className="fixed left-0 right-0 top-0 z-[9999] flex items-center justify-between px-5"
+        className="fixed left-0 right-0 top-0 z-[9999] flex items-center justify-between px-5 bg-black/80 backdrop-blur"
         style={{ height: HEADER_HEIGHT_PX }}
       >
         <div className="text-white">
@@ -47,8 +47,14 @@ export default function App() {
         </a>
       </header>
 
-      {/* Chat area (pushed down below header) */}
-      <div style={{ paddingTop: HEADER_HEIGHT_PX }} className="h-full w-full">
+      {/* Chat area: exact viewport height minus header */}
+      <div
+        className="w-full"
+        style={{
+          height: `calc(100vh - ${HEADER_HEIGHT_PX}px)`,
+          marginTop: HEADER_HEIGHT_PX,
+        }}
+      >
         <ChatKitPanel
           theme={scheme}
           onWidgetAction={handleWidgetAction}
@@ -59,6 +65,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 
