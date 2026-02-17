@@ -48,10 +48,10 @@ export default function App() {
       >
         <div className="text-white">
           <div className="text-base font-semibold tracking-tight sm:text-lg">
-            Clark Audio Instant Support
+            Clark Audio Bot
           </div>
           <div className="text-xs text-white/60 sm:text-sm">
-            AI-powered help for plugins & downloads
+            Instant help
           </div>
         </div>
 
@@ -80,6 +80,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 
