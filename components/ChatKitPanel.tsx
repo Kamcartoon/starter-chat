@@ -254,19 +254,19 @@ export function ChatKitPanel({
   const chatkit = useChatKit({
     api: { getClientSecret },
 
-    // ✅ UPDATED THEME: neutral black (no blue tint)
+    // ✅ DEFAULT starter theme (blue/slate)
     theme: {
       colorScheme: theme,
       color: {
-       grayscale: {
-  hue: 220,
-  tint: 6,
-  shade: -2,
-},
-accent: {
-  primary: "#ffffff",
-  level: 1,
-},
+        grayscale: {
+          hue: 220,
+          tint: 6,
+          shade: theme === "dark" ? -6 : -4,
+        },
+        accent: {
+          primary: theme === "dark" ? "#f1f5f9" : "#0f172a",
+          level: 1,
+        },
       },
       radius: "round",
     },
@@ -331,17 +331,6 @@ accent: {
   const activeError = errors.session ?? errors.integration;
   const blockingError = errors.script ?? activeError;
 
-  if (isDev) {
-    console.debug("[ChatKitPanel] render state", {
-      isInitializingSession,
-      hasControl: Boolean(chatkit.control),
-      scriptStatus,
-      hasError: Boolean(blockingError),
-      workflowId: WORKFLOW_ID,
-    });
-  }
-
-  // ✅ UPDATED WRAPPER: fill parent (so App can reserve header space)
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden bg-black">
       <ChatKit
@@ -371,14 +360,10 @@ function extractErrorDetail(
   payload: Record<string, unknown> | undefined,
   fallback: string
 ): string {
-  if (!payload) {
-    return fallback;
-  }
+  if (!payload) return fallback;
 
   const error = payload.error;
-  if (typeof error === "string") {
-    return error;
-  }
+  if (typeof error === "string") return error;
 
   if (
     error &&
@@ -390,15 +375,12 @@ function extractErrorDetail(
   }
 
   const details = payload.details;
-  if (typeof details === "string") {
-    return details;
-  }
+  if (typeof details === "string") return details;
 
   if (details && typeof details === "object" && "error" in details) {
     const nestedError = (details as { error?: unknown }).error;
-    if (typeof nestedError === "string") {
-      return nestedError;
-    }
+    if (typeof nestedError === "string") return nestedError;
+
     if (
       nestedError &&
       typeof nestedError === "object" &&
@@ -409,9 +391,8 @@ function extractErrorDetail(
     }
   }
 
-  if (typeof payload.message === "string") {
-    return payload.message;
-  }
+  if (typeof payload.message === "string") return payload.message;
 
   return fallback;
 }
+
