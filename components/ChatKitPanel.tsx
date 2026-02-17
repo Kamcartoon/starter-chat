@@ -258,15 +258,15 @@ export function ChatKitPanel({
     theme: {
       colorScheme: theme,
       color: {
-        grayscale: {
-          hue: 0,
-          tint: 0,
-          shade: -14,
-        },
-        accent: {
-          primary: "#ffffff",
-          level: 1,
-        },
+       grayscale: {
+  hue: 220,
+  tint: 6,
+  shade: -2,
+},
+accent: {
+  primary: "#ffffff",
+  level: 1,
+},
       },
       radius: "round",
     },
