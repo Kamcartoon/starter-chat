@@ -1,31 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
+import Image from "next/image";
 import { ChatKitPanel, type FactAction } from "@/components/ChatKitPanel";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function App() {
   const { scheme, setScheme } = useColorScheme();
-
-  const headerRef = useRef<HTMLElement | null>(null);
-  const [headerHeight, setHeaderHeight] = useState(72);
-
-  useEffect(() => {
-    if (!headerRef.current) return;
-
-    const updateHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
-      }
-    };
-
-    updateHeight();
-
-    const observer = new ResizeObserver(updateHeight);
-    observer.observe(headerRef.current);
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleWidgetAction = useCallback(async (action: FactAction) => {
     if (process.env.NODE_ENV !== "production") {
@@ -40,36 +21,40 @@ export default function App() {
   }, []);
 
   return (
-    <main className="h-[100dvh] w-screen overflow-hidden bg-[#0b1220]">
+    <main className="flex h-[100dvh] w-screen flex-col overflow-hidden bg-[#0b1220]">
       {/* Header */}
-      <header
-        ref={headerRef}
-        className="sticky top-0 z-[9999] flex w-full items-center justify-between border-b border-white/10 bg-[#0b1220]/90 px-4 py-3 backdrop-blur"
-      >
-        <div className="text-white">
-          <div className="text-base font-semibold tracking-tight sm:text-lg">
-            Clark Audio Bot
-          </div>
-          <div className="text-xs text-white/60 sm:text-sm">
-            Instant help
-          </div>
-        </div>
+      <header className="sticky top-0 z-[9999] w-full border-b border-white/10 bg-[#0b1220]/95 backdrop-blur">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Logo + subtitle */}
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="Clark Audio"
+              width={140}
+              height={32}
+              priority
+              className="h-[28px] w-auto object-contain"
+            />
 
-        <a
-          href="https://clarkaudio.com/contact/"
-          target="_blank"
-          rel="noreferrer"
-          className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-medium text-white backdrop-blur hover:bg-white/15 sm:px-4 sm:text-sm"
-        >
-          Talk to human
-        </a>
+            <div className="hidden sm:block">
+              <div className="text-xs text-white/60">Instant help</div>
+            </div>
+          </div>
+
+          {/* Button */}
+          <a
+            href="https://clarkaudio.com/contact/"
+            target="_blank"
+            rel="noreferrer"
+            className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-medium text-white backdrop-blur hover:bg-white/15 sm:px-4 sm:text-sm"
+          >
+            Talk to human
+          </a>
+        </div>
       </header>
 
       {/* Chat area */}
-      <div
-        style={{ height: `calc(100dvh - ${headerHeight}px)` }}
-        className="w-full"
-      >
+      <div className="flex-1 min-h-0 w-full">
         <ChatKitPanel
           theme={scheme}
           onWidgetAction={handleWidgetAction}
@@ -80,6 +65,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 
