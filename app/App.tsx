@@ -66,7 +66,7 @@ export default function App() {
 
         {/* Small print */}
         <div className="px-4 pb-3 text-center text-[11px] text-white/40">
-          AI can make mistakes. For urgent or critical issues, please{" "}
+          AI can make mistakes. For critical issues, please{" "}
           <a
             href="https://clarkaudio.com/contact/"
             target="_blank"
