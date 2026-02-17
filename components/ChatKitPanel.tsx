@@ -344,28 +344,27 @@ export function ChatKitPanel({
   }
 
   return (
-    <div className="relative flex h-[90vh] w-full flex-col overflow-hidden bg-white shadow-sm transition-colors dark:bg-slate-900">
-      <ChatKit
-        key={widgetInstanceKey}
-        control={chatkit.control}
-        className={
-          blockingError || isInitializingSession
-            ? "pointer-events-none opacity-0"
-            : "block h-full w-full"
-        }
-      />
-      <ErrorOverlay
-        error={blockingError}
-        fallbackMessage={
-          blockingError || !isInitializingSession
-            ? null
-            : "Loading assistant session..."
-        }
-        onRetry={blockingError && errors.retryable ? handleResetChat : null}
-        retryLabel="Restart chat"
-      />
-    </div>
-  );
+  <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <ChatKit
+      key={widgetInstanceKey}
+      control={chatkit.control}
+      className={
+        blockingError || isInitializingSession
+          ? "pointer-events-none opacity-0"
+          : "block h-full w-full"
+      }
+    />
+    <ErrorOverlay
+      error={blockingError}
+      fallbackMessage={
+        blockingError || !isInitializingSession ? null : "Loading assistant session..."
+      }
+      onRetry={blockingError && errors.retryable ? handleResetChat : null}
+      retryLabel="Restart chat"
+    />
+  </div>
+);
+
 }
 
 function extractErrorDetail(
