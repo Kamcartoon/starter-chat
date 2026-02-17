@@ -20,10 +20,21 @@ export default function App() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-slate-100 px-6 py-6 dark:bg-slate-950">
-      <div className="mx-auto w-full max-w-5xl">
+    <main className="relative h-screen w-screen bg-black">
+      {/* Top-right button */}
+      <a
+        href="https://clarkaudio.com/contact/"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed right-5 top-5 z-[9999] rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-white/15"
+      >
+        Talk to human
+      </a>
+
+      {/* Full-screen chat */}
+      <div className="h-full w-full">
         <ChatKitPanel
-          theme={scheme}
+          theme={scheme}            // leave as-is so your ChatKitPanel can still theme itself
           onWidgetAction={handleWidgetAction}
           onResponseEnd={handleResponseEnd}
           onThemeRequest={setScheme}
@@ -32,3 +43,4 @@ export default function App() {
     </main>
   );
 }
+
