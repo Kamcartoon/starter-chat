@@ -21,9 +21,9 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Hide the top conversation title bar */
-openai-chatkit header h1,
-openai-chatkit header h2 {
+/* Hide the top-left thread title area */
+openai-chatkit header div:first-child {
   display: none !important;
 }
+
 
