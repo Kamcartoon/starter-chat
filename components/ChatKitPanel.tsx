@@ -261,7 +261,7 @@ export function ChatKitPanel({
         grayscale: {
           hue: 220,
           tint: 6,
-          shade: theme === "dark" ? -6 : -4,
+          shade: theme === "dark" ? -4 : -4,
         },
         accent: {
           primary: theme === "dark" ? "#f1f5f9" : "#0f172a",
