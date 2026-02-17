@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChatKitPanel, type FactAction } from "@/components/ChatKitPanel";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -8,28 +8,23 @@ export default function App() {
   const { scheme, setScheme } = useColorScheme();
 
   const headerRef = useRef<HTMLElement | null>(null);
-  const [headerH, setHeaderH] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(72);
 
-  // Measure header height (handles mobile wrapping, dynamic font sizes, etc.)
-  useLayoutEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
+  useEffect(() => {
+    if (!headerRef.current) return;
 
-    const measure = () => setHeaderH(el.getBoundingClientRect().height);
-
-    measure();
-
-    // Re-measure on resize/orientation changes
-    window.addEventListener("resize", measure);
-
-    // Re-measure if the header content wraps (ResizeObserver is best for this)
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-
-    return () => {
-      window.removeEventListener("resize", measure);
-      ro.disconnect();
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
     };
+
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(headerRef.current);
+
+    return () => observer.disconnect();
   }, []);
 
   const handleWidgetAction = useCallback(async (action: FactAction) => {
@@ -45,46 +40,35 @@ export default function App() {
   }, []);
 
   return (
-    <main
-      className="w-screen overflow-hidden"
-      style={{
-        // mobile-safe viewport height
-        height: "100dvh",
-        background: "#000",
-      }}
-    >
-      {/* Sticky header (no overlap) */}
+    <main className="h-[100dvh] w-screen overflow-hidden bg-[#0b1220]">
+      {/* Header */}
       <header
         ref={headerRef}
-        className="sticky top-0 z-[9999] w-full border-b border-white/10 bg-slate-950/40 backdrop-blur"
+        className="sticky top-0 z-[9999] flex w-full items-center justify-between border-b border-white/10 bg-[#0b1220]/90 px-4 py-3 backdrop-blur"
       >
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-          <div className="min-w-0 text-white">
-            <div className="truncate text-base font-semibold tracking-tight sm:text-lg">
-              Clark Audio Bot
-            </div>
-            <div className="truncate text-xs text-white/60">
-              Instant help
-            </div>
+        <div className="text-white">
+          <div className="text-base font-semibold tracking-tight sm:text-lg">
+            Clark Audio Instant Support
           </div>
-
-          <a
-            href="https://clarkaudio.com/contact/"
-            target="_blank"
-            rel="noreferrer"
-            className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-white/15"
-          >
-            Talk to human
-          </a>
+          <div className="text-xs text-white/60 sm:text-sm">
+            AI-powered help for plugins & downloads
+          </div>
         </div>
+
+        <a
+          href="https://clarkaudio.com/contact/"
+          target="_blank"
+          rel="noreferrer"
+          className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-medium text-white backdrop-blur hover:bg-white/15 sm:px-4 sm:text-sm"
+        >
+          Talk to human
+        </a>
       </header>
 
-      {/* Chat fills EXACT remaining height */}
+      {/* Chat area */}
       <div
+        style={{ height: `calc(100dvh - ${headerHeight}px)` }}
         className="w-full"
-        style={{
-          height: headerH ? `calc(100dvh - ${headerH}px)` : "calc(100dvh - 72px)",
-        }}
       >
         <ChatKitPanel
           theme={scheme}
