@@ -4,8 +4,6 @@ import { useCallback } from "react";
 import { ChatKitPanel, type FactAction } from "@/components/ChatKitPanel";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
-const HEADER_HEIGHT_PX = 72;
-
 export default function App() {
   const { scheme, setScheme } = useColorScheme();
 
@@ -22,49 +20,59 @@ export default function App() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen bg-slate-950 overflow-hidden">
-      {/* Header */}
-      <header
-        className="fixed left-0 right-0 top-0 z-[9999] flex items-center justify-between px-5 bg-slate-950/90 backdrop-blur"
-        style={{ height: HEADER_HEIGHT_PX }}
-      >
-        <div className="text-white">
-          <div className="text-lg font-semibold tracking-tight">
-            Clark Audio Instant Support
+    <main
+      className="w-screen overflow-hidden"
+      style={{
+        // Fixes iOS Safari "100vh" issues (address bar)
+        height: "100dvh",
+      }}
+    >
+      {/* Header (sticky so it doesn't break layout height on mobile) */}
+      <header className="sticky top-0 z-[9999] w-full border-b border-white/10 bg-slate-950/40 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <div className="min-w-0 text-white">
+            <div className="truncate text-base font-semibold tracking-tight sm:text-lg">
+              Clark Audio Instant Support
+            </div>
+            <div className="truncate text-xs text-white/60">
+              AI-powered help for plugins & downloads
+            </div>
           </div>
-          <div className="text-xs text-white/60">
-            AI-powered help for plugins & downloads
-          </div>
-        </div>
 
-        <a
-          href="https://clarkaudio.com/contact/"
-          target="_blank"
-          rel="noreferrer"
-          className="rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-white/15"
-        >
-          Talk to human
-        </a>
+          <a
+            href="https://clarkaudio.com/contact/"
+            target="_blank"
+            rel="noreferrer"
+            className="shrink-0 rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-white/15"
+          >
+            Talk to human
+          </a>
+        </div>
       </header>
 
-      {/* Chat area: exact viewport height minus header */}
+      {/* Chat area: takes the remaining height below the sticky header */}
       <div
         className="w-full"
         style={{
-          height: `calc(100vh - ${HEADER_HEIGHT_PX}px)`,
-          marginTop: HEADER_HEIGHT_PX,
+          height: "calc(100dvh - var(--header-h, 0px))",
         }}
       >
-        <ChatKitPanel
-          theme={scheme}
-          onWidgetAction={handleWidgetAction}
-          onResponseEnd={handleResponseEnd}
-          onThemeRequest={setScheme}
-        />
+        {/* We measure header height via CSS variable by setting it here with a known value.
+            Since header content can wrap on mobile, we avoid hardcoding by letting the page flow.
+            So instead, we just make the chat fill the remaining space using flex below. */}
+        <div className="flex h-[calc(100dvh-64px)] w-full flex-col sm:h-[calc(100dvh-72px)]">
+          <ChatKitPanel
+            theme={scheme}
+            onWidgetAction={handleWidgetAction}
+            onResponseEnd={handleResponseEnd}
+            onThemeRequest={setScheme}
+          />
+        </div>
       </div>
     </main>
   );
 }
+
 
 
 
