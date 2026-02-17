@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { ChatKitPanel, type FactAction } from "@/components/ChatKitPanel";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
-const HEADER_HEIGHT_PX = 72; // adjust if you want
+const HEADER_HEIGHT_PX = 72;
 
 export default function App() {
   const { scheme, setScheme } = useColorScheme();
@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <main className="relative h-screen w-screen bg-black">
-      {/* Header overlay */}
+      {/* Header */}
       <header
         className="fixed left-0 right-0 top-0 z-[9999] flex items-center justify-between px-5"
         style={{ height: HEADER_HEIGHT_PX }}
@@ -47,7 +47,7 @@ export default function App() {
         </a>
       </header>
 
-      {/* Push chat down so it never hides behind header */}
+      {/* Chat area (pushed down below header) */}
       <div style={{ paddingTop: HEADER_HEIGHT_PX }} className="h-full w-full">
         <ChatKitPanel
           theme={scheme}
@@ -60,6 +60,5 @@ export default function App() {
   );
 }
 
-}
 
 
